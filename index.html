@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>The Pantheon Report</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+      *, *::before, *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html, body {
+        width: 100%;
+        background-color: #0b030b;
+      }
+
+      .navbar {
+        background-color: #f0e4d1;
+        height: 230px;
+        width: 100%;
+        border-bottom: 1px solid #0b030b;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        z-index: 100;
+      }
+
+      .logo {
+        height: 250px;
+        width: auto;
+        cursor: pointer;
+        filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.4));
+        transition: filter 0.2s ease;
+      }
+
+      .logo:hover {
+        filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.55));
+      }
+
+      .social-icons {
+        position: absolute;
+        left: 40px;
+        top: 30%;
+        transform: translateY(-50%);
+        height: 82px;
+        width: auto;
+        filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.35));
+        cursor: pointer;
+      }
+
+      .contact-info {
+        position: absolute;
+        right: 40px;
+        top: 40%;
+        transform: translateY(-50%);
+        text-align: center;
+        font-family: 'Palatino Linotype', Palatino, serif;
+        color: #0b030b;
+      }
+
+      .contact-info h3 {
+        font-size: 17px;
+        font-weight: bold;
+        margin-bottom: 5px;
+        letter-spacing: 0.5px;
+        font-family: 'Palatino Linotype', Palatino, serif;
+      }
+
+      .contact-info p {
+        font-size: 15px;
+        margin-bottom: 4px;
+        opacity: 0.8;
+        font-family: 'Palatino Linotype', Palatino, serif;
+      }
+
+      .category-bar {
+        background-color: #f0e4d1;
+        height: 50px;
+        width: 100%;
+        border-bottom: 1px solid #0b030b;
+        display: flex;
+        align-items: center;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      .cat-item {
+        flex: 1;
+        height: 100%;
+        border-right: 1px solid rgba(11, 3, 11, 0.3);
+        box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.08);
+        transition: box-shadow 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Cinzel', serif;
+        font-size: 19px;
+        color: #0b030b;
+        letter-spacing: 0.5px;
+        cursor: pointer;
+        padding: 0 10px;
+      }
+
+      .cat-item:hover {
+        box-shadow: inset 0 0 17px rgba(0, 0, 0, 0.25);
+        background-color: rgba(0, 0, 0, 0.05);
+      }
+
+      .cat-item:last-child { border-right: none; }
+      .cat-item a { color: #0b030b; text-decoration: none; }
+      .cat-item a:hover { text-decoration: underline; }
+
+      .main-content {
+        display: flex;
+        width: 100%;
+        min-height: 100vh;
+        background-color: #f0e4d1;
+      }
+
+      .ads-sidebar {
+        background-color: #f0e4d1;
+        width: 220px;
+        flex-shrink: 0;
+        min-height: 100vh;
+        padding: 40px 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 70px;
+        border: none;
+        outline: none;
+      }
+
+      .ads-label {
+        font-family: 'Cinzel', serif;
+        font-size: 13px;
+        color: #0b030b;
+        opacity: 0.35;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        text-align: center;
+      }
+
+      .ad-box-full {
+        width: 160px;
+        border: 1px solid rgba(11, 3, 11, 0.18);
+        background-color: #e8dcc8;
+        opacity: 0;
+        transform: translateY(12px);
+        transition: opacity 0.45s ease, transform 0.45s ease;
+        text-decoration: none;
+        display: block;
+        overflow: hidden;
+        cursor: pointer;
+      }
+
+      .ad-box-full.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .ad-box-full img {
+        width: 100%;
+        height: 120px;
+        object-fit: cover;
+        display: block;
+      }
+
+      .ad-box-full-text {
+        padding: 8px 8px 10px;
+        font-family: Arial, sans-serif;
+        font-size: 10.5px;
+        color: #1a1a1a;
+        line-height: 1.4;
+        background-color: #e8dcc8;
+      }
+
+      .content-area {
+        background-color: #f0e4d1;
+        flex: 1;
+        min-width: 0;
+        min-height: 100vh;
+        padding: 50px 60px 80px 60px;
+      }
+
+      .welcome-title {
+        font-family: 'Cinzel', serif;
+        font-size: 30px;
+        font-weight: 600;
+        color: #0b030b;
+        margin-bottom: 8px;
+        text-align: center;
+        transform: translateX(-110px);
+      }
+
+      .section-label {
+        font-family: 'Palatino Linotype', Palatino, serif;
+        font-size: 15px;
+        color: #0b030b;
+        opacity: 0.65;
+        font-style: italic;
+        margin-bottom: 28px;
+        padding-bottom: 16px;
+        border-bottom: none;
+        text-align: center;
+        transform: translateX(-110px);
+      }
+
+      .section-label::after {
+        content: '';
+        display: block;
+        width: 120px;
+        height: 1px;
+        background-color: rgba(11, 3, 11, 0.2);
+        margin: 12px auto 0 auto;
+      }
+
+      .featured-card {
+        display: flex;
+        width: 100%;
+        border: 1px solid rgba(11, 3, 11, 0.12);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        text-decoration: none;
+        color: #0b030b;
+        margin-bottom: 32px;
+        transition: box-shadow 0.25s ease, transform 0.25s ease;
+      }
+
+      .featured-card:hover {
+        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.18);
+        transform: translateY(-2px);
+      }
+
+      .featured-card-image {
+        width: 300px;
+        min-height: 210px;
+        flex-shrink: 0;
+        overflow: hidden;
+        background-color: #ddd0b8;
+      }
+
+      .featured-card-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        transition: transform 0.3s ease;
+      }
+
+      .featured-card:hover .featured-card-image img {
+        transform: scale(1.03);
+      }
+
+      .featured-card-body {
+        padding: 26px 28px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .featured-card-tag {
+        font-family: 'Cinzel', serif;
+        font-size: 11px;
+        color: #0b030b;
+        opacity: 0.5;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+      }
+
+      .featured-card-title {
+        font-family: 'Cinzel', serif;
+        font-size: 17px;
+        font-weight: 600;
+        color: #0b030b;
+        line-height: 1.5;
+        margin-bottom: 14px;
+      }
+
+      .featured-card-meta {
+        font-family: 'Palatino Linotype', Palatino, serif;
+        font-size: 13px;
+        color: #0b030b;
+        opacity: 0.6;
+      }
+
+      .news-label {
+        font-family: 'Palatino Linotype', Palatino, serif;
+        font-size: 15px;
+        color: #0b030b;
+        opacity: 0.65;
+        font-style: italic;
+        margin-bottom: 20px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid rgba(11, 3, 11, 0.15);
+      }
+
+      .news-card {
+        display: flex;
+        width: 100%;
+        border: 1px solid rgba(11, 3, 11, 0.12);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        color: #0b030b;
+        text-decoration: none;
+        transition: box-shadow 0.25s ease, transform 0.25s ease;
+      }
+
+      .news-card:hover {
+        box-shadow: 0 4px 18px rgba(0, 0, 0, 0.18);
+        transform: translateY(-2px);
+      }
+
+      .mystery-person {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 180px;
+        min-height: 160px;
+        flex-shrink: 0;
+        background-color: #1a1a1a;
+      }
+
+      .mystery-head {
+        width: 54px;
+        height: 54px;
+        background-color: #333;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: Georgia, serif;
+        font-size: 28px;
+        color: #f0e4d1;
+        margin-bottom: 6px;
+      }
+
+      .mystery-body {
+        width: 80px;
+        height: 48px;
+        background-color: #333;
+        border-radius: 40px 40px 0 0;
+      }
+
+      .news-card-body {
+        padding: 22px 24px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .news-card-tag {
+        font-family: 'Cinzel', serif;
+        font-size: 11px;
+        color: #0b030b;
+        opacity: 0.5;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        margin-bottom: 8px;
+      }
+
+      .news-card-title {
+        font-family: 'Cinzel', serif;
+        font-size: 16px;
+        font-weight: 600;
+        color: #0b030b;
+        line-height: 1.5;
+        margin-bottom: 10px;
+      }
+
+      .news-card-meta {
+        font-family: 'Palatino Linotype', Palatino, serif;
+        font-size: 12.5px;
+        color: #0b030b;
+        opacity: 0.55;
+      }
+    </style>
+  </head>
+  <body>
+
+    <nav class="navbar">
+      <a href="sorry.html">
+        <img src="socialmedia.png" alt="Social Media" class="social-icons">
+      </a>
+      <div class="contact-info">
+        <h3>Contact us at:</h3>
+        <p>+40 712 345 678</p>
+        <p>thepantheonreport@yahoo.co.uk</p>
+      </div>
+      <a href="index.html">
+        <img src="logo-pantheon.png" alt="The Pantheon Report" class="logo">
+      </a>
+    </nav>
+
+    <div class="category-bar">
+      <div class="cat-item"><a href="sorry.html">Contemporan News</a></div>
+      <div class="cat-item"><a href="sorry.html">Roman History and Culture</a></div>
+      <div class="cat-item"><a href="historical-reports.html">Historical Reports and Articles</a></div>
+      <div class="cat-item"><a href="sorry.html">About Us</a></div>
+    </div>
+
+    <div class="main-content">
+
+      <div class="ads-sidebar">
+        <p class="ads-label">Google Ads</p>
+
+        <a href="https://www.youtube.com/watch?v=Qj8C7yAO1jk&list=PLiO3Nd5tKjv1Tg7rD9dfItPBrP_UhGP-Q&index=15" target="_blank" class="ad-box-full" id="ad1">
+          <img src="ad1.png" alt="Ad 1">
+          <div class="ad-box-full-text">Are you an opressed straight voice? Should you blackpill? This shocking video might be of your interest.</div>
+        </a>
+
+        <a href="https://vm.tiktok.com/ZNRTub4es/" target="_blank" class="ad-box-full" id="ad2">
+          <img src="ad2.png" alt="Ad 2">
+          <div class="ad-box-full-text">If you have a computer you must try this game. The Mystical Tree: Free game</div>
+        </a>
+
+        <a href="https://vm.tiktok.com/ZNRTubrM5/" target="_blank" class="ad-box-full" id="ad3">
+          <img src="ad3.png" alt="Ad 3">
+          <div class="ad-box-full-text">Are melons becoming increasingly dangerous to humanity? This menacing melon shows it all...</div>
+        </a>
+
+        <a href="https://www.youtube.com/watch?v=s2JHVxd7RxA&list=PLiO3Nd5tKjv053SPRg1aVHhVrC_CTKj-w&index=10" target="_blank" class="ad-box-full" id="ad4">
+          <img src="ad4.png" alt="Ad 4">
+          <div class="ad-box-full-text">A shocking reveal, as the cut scenes from Game of Thrones episodes have been made public. Here is what may interest you.</div>
+        </a>
+
+      </div>
+
+      <div class="content-area">
+
+        <h1 class="welcome-title">Welcome to the front page!</h1>
+        <p class="section-label">Here are our latest news and articles:</p>
+
+        <a href="article.html" class="featured-card">
+          <div class="featured-card-image">
+            <img
+              src="https://commons.wikimedia.org/wiki/Special:FilePath/Sack_of_Rome_by_the_Visigoths_on_24_August_410_by_JN_Sylvestre_1890.jpg"
+              alt="The illusion of certainty"
+              onerror="this.style.display='none'"
+            >
+          </div>
+          <div class="featured-card-body">
+            <p class="featured-card-tag">Historical Reports and Articles</p>
+            <p class="featured-card-title">The illusion of certainty: How can the Geopolitics around Rome's Fall in 476 AD connect to today's falling giants</p>
+            <p class="featured-card-meta">Written by Michael Dyonses &nbsp;·&nbsp; 23rd of June, 2026 &nbsp;·&nbsp; 7:21PM</p>
+          </div>
+        </a>
+
+        <p class="news-label">Latest News:</p>
+
+        <a href="https://www.youtube.com/watch?v=95RK2dCrC8Q" target="_blank" class="news-card">
+          <div class="mystery-person">
+            <div class="mystery-head">?</div>
+            <div class="mystery-body"></div>
+          </div>
+          <div class="news-card-body">
+            <p class="news-card-tag">Contemporan News</p>
+            <p class="news-card-title">Keir Starmer just resigned. Who will take his place? This certain candidate will impress you.</p>
+            <p class="news-card-meta">Written by Michael Dyonses &nbsp;·&nbsp; 22nd of June, 2026 &nbsp;·&nbsp; 4:47PM</p>
+          </div>
+        </a>
+
+      </div>
+    </div>
+
+    <script>
+      setTimeout(() => { document.getElementById('ad1').classList.add('visible'); }, 2000);
+      setTimeout(() => { document.getElementById('ad2').classList.add('visible'); }, 2300);
+      setTimeout(() => { document.getElementById('ad3').classList.add('visible'); }, 2600);
+      setTimeout(() => { document.getElementById('ad4').classList.add('visible'); }, 3000);
+    </script>
+
+  </body>
+</html>

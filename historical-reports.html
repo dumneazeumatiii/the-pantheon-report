@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>The Pantheon Report</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+      *, *::before, *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html, body {
+        width: 100%;
+        background-color: #0b030b;
+      }
+
+      .navbar {
+        background-color: #f0e4d1;
+        height: 230px;
+        width: 100%;
+        border-bottom: 1px solid #0b030b;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        z-index: 100;
+      }
+
+      .logo {
+        height: 250px;
+        width: auto;
+        cursor: pointer;
+        filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.4));
+        transition: filter 0.2s ease;
+      }
+
+      .logo:hover {
+        filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.55));
+      }
+
+      .social-icons {
+        position: absolute;
+        left: 40px;
+        top: 30%;
+        transform: translateY(-50%);
+        height: 82px;
+        width: auto;
+        filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.35));
+        cursor: pointer;
+      }
+
+      .contact-info {
+        position: absolute;
+        right: 40px;
+        top: 40%;
+        transform: translateY(-50%);
+        text-align: center;
+        font-family: 'Palatino Linotype', Palatino, serif;
+        color: #0b030b;
+      }
+
+      .contact-info h3 {
+        font-size: 17px;
+        font-weight: bold;
+        margin-bottom: 5px;
+        letter-spacing: 0.5px;
+        font-family: 'Palatino Linotype', Palatino, serif;
+      }
+
+      .contact-info p {
+        font-size: 15px;
+        margin-bottom: 4px;
+        opacity: 0.8;
+        font-family: 'Palatino Linotype', Palatino, serif;
+      }
+
+      .category-bar {
+        background-color: #f0e4d1;
+        height: 50px;
+        width: 100%;
+        border-bottom: 1px solid #0b030b;
+        display: flex;
+        align-items: center;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      .cat-item {
+        flex: 1;
+        height: 100%;
+        border-right: 1px solid rgba(11, 3, 11, 0.3);
+        box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.08);
+        transition: box-shadow 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Cinzel', serif;
+        font-size: 19px;
+        color: #0b030b;
+        letter-spacing: 0.5px;
+        cursor: pointer;
+        padding: 0 10px;
+      }
+
+      .cat-item:hover {
+        box-shadow: inset 0 0 17px rgba(0, 0, 0, 0.25);
+        background-color: rgba(0, 0, 0, 0.05);
+      }
+
+      .cat-item:last-child { border-right: none; }
+      .cat-item a { color: #0b030b; text-decoration: none; }
+      .cat-item a:hover { text-decoration: underline; }
+
+      .main-content {
+        display: flex;
+        width: 100%;
+        min-height: 100vh;
+        background-color: #0b030b;
+      }
+
+      .page {
+        background-color: #f0e4d1;
+        flex: 1;
+        min-height: 100vh;
+        padding: 60px 80px;
+      }
+
+      .page-headline {
+        font-family: 'Cinzel', serif;
+        font-size: 26px;
+        font-weight: 600;
+        color: #0b030b;
+        margin-bottom: 40px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid rgba(11, 3, 11, 0.2);
+        text-align: center;
+      }
+
+      .articles-grid {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 28px;
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+
+      .article-card {
+        width: 260px;
+        background-color: #f0e4d1;
+        border: 1px solid rgba(11, 3, 11, 0.12);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        text-decoration: none;
+        color: #0b030b;
+        display: block;
+        transition: box-shadow 0.25s ease, transform 0.25s ease;
+      }
+
+      .article-card:hover {
+        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.18);
+        transform: translateY(-3px);
+      }
+
+      .article-card-image {
+        width: 100%;
+        height: 170px;
+        overflow: hidden;
+        background-color: #ddd0b8;
+      }
+
+      .article-card-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        transition: transform 0.3s ease;
+      }
+
+      .article-card:hover .article-card-image img {
+        transform: scale(1.03);
+      }
+
+      .article-card-body {
+        padding: 16px 18px 18px;
+      }
+
+      .article-card-title {
+        font-family: 'Cinzel', serif;
+        font-size: 13.5px;
+        font-weight: 600;
+        color: #0b030b;
+        line-height: 1.5;
+        margin-bottom: 10px;
+      }
+
+      .article-card-meta {
+        font-family: 'Palatino Linotype', Palatino, serif;
+        font-size: 12px;
+        color: #0b030b;
+        opacity: 0.6;
+      }
+    </style>
+  </head>
+  <body>
+
+    <nav class="navbar">
+      <a href="sorry.html">
+        <img src="socialmedia.png" alt="Social Media" class="social-icons">
+      </a>
+      <div class="contact-info">
+        <h3>Contact us at:</h3>
+        <p>+40 712 345 678</p>
+        <p>thepantheonreport@yahoo.co.uk</p>
+      </div>
+      <a href="index.html">
+        <img src="logo-pantheon.png" alt="The Pantheon Report" class="logo">
+      </a>
+    </nav>
+
+    <div class="category-bar">
+    <div class="cat-item"><a href="sorry.html">Contemporan News</a></div>
+<div class="cat-item"><a href="sorry.html">Roman History and Culture</a></div>
+<div class="cat-item"><a href="historical-reports.html">Historical Reports and Articles</a></div>
+<div class="cat-item"><a href="sorry.html">About Us</a></div>
+    </div>
+
+    <div class="main-content">
+      <div class="page">
+
+        <h2 class="page-headline">Here are our last published articles</h2>
+
+        <div class="articles-grid">
+
+          <a href="article.html" class="article-card">
+            <div class="article-card-image">
+              <img
+                src="https://commons.wikimedia.org/wiki/Special:FilePath/Sack_of_Rome_by_the_Visigoths_on_24_August_410_by_JN_Sylvestre_1890.jpg"
+                alt="The illusion of certainty"
+                onerror="this.style.display='none'"
+              >
+            </div>
+            <div class="article-card-body">
+              <p class="article-card-title">The illusion of certainty: How can the Geopolitics around Rome's Fall in 476 AD connect to today's falling giants</p>
+              <p class="article-card-meta">Written by Michael Dyonses &nbsp;·&nbsp; 23rd of June, 2026 &nbsp;·&nbsp; 7:21PM</p>
+            </div>
+          </a>
+
+          <a href="sorry.html" class="article-card">
+            <div class="article-card-image">
+              <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Invasions_of_the_Roman_Empire_1.png" alt="Test Article 1" onerror="this.style.display='none'">
+            </div>
+            <div class="article-card-body">
+              <p class="article-card-title">Test Article 1</p>
+              <p class="article-card-meta">Written by The Pantheon Report &nbsp;·&nbsp; 20th of June, 2026 &nbsp;·&nbsp; 3:00PM</p>
+            </div>
+          </a>
+
+          <a href="sorry.html" class="article-card">
+            <div class="article-card-image">
+              <img src="https://commons.wikimedia.org/wiki/Special:FilePath/British_Empire_1921.png" alt="Test Article 2" onerror="this.style.display='none'">
+            </div>
+            <div class="article-card-body">
+              <p class="article-card-title">Test Article 2</p>
+              <p class="article-card-meta">Written by The Pantheon Report &nbsp;·&nbsp; 18th of June, 2026 &nbsp;·&nbsp; 11:45AM</p>
+            </div>
+          </a>
+
+          <a href="sorry.html" class="article-card">
+            <div class="article-card-image">
+              <img src="https://commons.wikimedia.org/wiki/Special:FilePath/C._476_Europe.jpg" alt="Test Article 3" onerror="this.style.display='none'">
+            </div>
+            <div class="article-card-body">
+              <p class="article-card-title">Test Article 3</p>
+              <p class="article-card-meta">Written by The Pantheon Report &nbsp;·&nbsp; 15th of June, 2026 &nbsp;·&nbsp; 9:10AM</p>
+            </div>
+          </a>
+
+          <a href="sorry.html" class="article-card">
+            <div class="article-card-image">
+              <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Cole_Thomas_The_Course_of_Empire_Desolation_1836.jpg" alt="Test Article 4" onerror="this.style.display='none'">
+            </div>
+            <div class="article-card-body">
+              <p class="article-card-title">Test Article 4</p>
+              <p class="article-card-meta">Written by The Pantheon Report &nbsp;·&nbsp; 12th of June, 2026 &nbsp;·&nbsp; 6:30PM</p>
+            </div>
+          </a>
+
+          <a href="sorry.html" class="article-card">
+            <div class="article-card-image">
+              <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Genseric_sacking_Rome_455_The_Sack_of_Rome,_Karl_Briullov,_1833-1836.jpg" alt="Test Article 5" onerror="this.style.display='none'">
+            </div>
+            <div class="article-card-body">
+              <p class="article-card-title">Test Article 5</p>
+              <p class="article-card-meta">Written by The Pantheon Report &nbsp;·&nbsp; 10th of June, 2026 &nbsp;·&nbsp; 2:15PM</p>
+            </div>
+          </a>
+
+        </div>
+      </div>
+    </div>
+
+  </body>
+</html>

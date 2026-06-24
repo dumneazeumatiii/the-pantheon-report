@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>The Pantheon Report</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+      *, *::before, *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html, body {
+        width: 100%;
+        background-color: #0b030b;
+      }
+
+      .navbar {
+        background-color: #f0e4d1;
+        height: 230px;
+        width: 100%;
+        border-bottom: 1px solid #0b030b;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        z-index: 100;
+      }
+
+      .logo {
+        height: 250px;
+        width: auto;
+        cursor: pointer;
+        filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.4));
+        transition: filter 0.2s ease;
+      }
+
+      .logo:hover {
+        filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.55));
+      }
+
+      .social-icons {
+        position: absolute;
+        left: 40px;
+        top: 30%;
+        transform: translateY(-50%);
+        height: 82px;
+        width: auto;
+        filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.35));
+        cursor: pointer;
+      }
+
+      .contact-info {
+        position: absolute;
+        right: 40px;
+        top: 40%;
+        transform: translateY(-50%);
+        text-align: center;
+        font-family: 'Palatino Linotype', Palatino, serif;
+        color: #0b030b;
+      }
+
+      .contact-info h3 {
+        font-size: 17px;
+        font-weight: bold;
+        margin-bottom: 5px;
+        letter-spacing: 0.5px;
+      }
+
+      .contact-info p {
+        font-size: 15px;
+        margin-bottom: 4px;
+        opacity: 0.8;
+      }
+
+      .category-bar {
+        background-color: #f0e4d1;
+        height: 50px;
+        width: 100%;
+        border-bottom: 1px solid #0b030b;
+        display: flex;
+        align-items: center;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      .cat-item {
+        flex: 1;
+        height: 100%;
+        border-right: 1px solid rgba(11, 3, 11, 0.3);
+        box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.08);
+        transition: box-shadow 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Cinzel', serif;
+        font-size: 19px;
+        color: #0b030b;
+        letter-spacing: 0.5px;
+        cursor: pointer;
+        padding: 0 10px;
+      }
+
+      .cat-item:hover {
+        box-shadow: inset 0 0 17px rgba(0, 0, 0, 0.25);
+        background-color: rgba(0, 0, 0, 0.05);
+      }
+
+      .cat-item:last-child { border-right: none; }
+      .cat-item a { color: #0b030b; text-decoration: none; }
+      .cat-item a:hover { text-decoration: underline; }
+
+      .sidebar {
+        position: fixed;
+        left: 0;
+        top: 50px;
+        width: 200px;
+        height: calc(100vh - 50px);
+        background-color: #f0e4d1;
+        transform: translateX(-200px);
+        transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 200;
+        overflow-y: auto;
+        border-right: 0.5px solid #0b030b;
+        border-top: 0.5px solid #0b030b;
+        box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+      }
+
+      .sidebar.open { transform: translateX(0); }
+
+      .toc { padding: 20px 15px; }
+
+      .toc-title {
+        font-family: 'Cinzel', serif;
+        font-size: 13px;
+        font-weight: 600;
+        color: #0b030b;
+        margin-bottom: 12px;
+        border-bottom: 1px solid rgba(11, 3, 11, 0.2);
+        padding-bottom: 8px;
+        letter-spacing: 0.5px;
+      }
+
+      .toc a {
+        display: block;
+        font-family: 'Palatino Linotype', Palatino, serif;
+        font-size: 13px;
+        color: #0b030b;
+        text-decoration: none;
+        padding: 4px 0;
+        opacity: 0.8;
+        transition: opacity 0.2s ease;
+      }
+
+      .toc a:hover { opacity: 1; text-decoration: underline; }
+      .toc .toc-main { font-weight: bold; margin-top: 8px; }
+      .toc .toc-sub { padding-left: 14px; font-size: 12px; opacity: 0.7; }
+
+      .sidebar-tab {
+        position: fixed;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 16px;
+        height: 44px;
+        background-color: #f0e4d1;
+        border: 1px solid #0b030b;
+        border-left: none;
+        border-radius: 0 6px 6px 0;
+        z-index: 201;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        color: #0b030b;
+        transition: left 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .sidebar-tab.open { left: 200px; }
+
+      .main-content {
+        display: flex;
+        width: 100%;
+        background-color: #0b030b;
+      }
+
+      .article {
+        background-color: #f0e4d1;
+        flex: 1;
+        position: relative;
+        padding: 30px 80px 80px 230px;
+      }
+
+      .author-info {
+        position: absolute;
+        top: 20px;
+        left: 240px;
+        font-family: 'Palatino Linotype', Palatino, serif;
+        color: #0b030b;
+      }
+
+      .author-info .written-by { font-size: 15px; font-weight: bold; margin-bottom: 4px; }
+      .author-info .date { font-size: 14px; margin-bottom: 3px; opacity: 0.8; }
+      .author-info .time { font-size: 12px; opacity: 0.6; }
+
+      .view-other {
+        position: absolute;
+        top: 20px;
+        right: 200px;
+        font-family: 'Palatino Linotype', Palatino, serif;
+        font-size: 16px;
+        color: #0b030b;
+        opacity: 0.85;
+        font-style: italic;
+        text-align: right;
+      }
+
+      .view-other a { color: #0b030b; text-decoration: none; font-weight: bold; font-style: normal; }
+      .view-other a:hover { text-decoration: underline; }
+
+      .author-float {
+        float: right;
+        margin-left: 40px;
+        margin-bottom: 30px;
+        margin-top: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .author-box {
+        width: 180px;
+        height: 220px;
+        border: 1px solid #0b030b;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+        overflow: hidden;
+      }
+
+      .author-box img { width: 100%; height: 100%; object-fit: cover; }
+
+      .author-name {
+        margin-top: 8px;
+        text-align: center;
+        font-family: 'Palatino Linotype', Palatino, serif;
+        font-size: 14px;
+        font-weight: bold;
+        color: #0b030b;
+        opacity: 0.85;
+      }
+
+      .article-content { padding-top: 80px; }
+
+      .article-title {
+        font-family: 'Cinzel', serif;
+        font-size: 34px;
+        font-weight: 600;
+        color: #0b030b;
+        line-height: 1.3;
+        margin-bottom: 25px;
+      }
+
+      .article-intro {
+        font-family: 'Palatino Linotype', Palatino, serif;
+        font-size: 17px;
+        color: #0b030b;
+        line-height: 1.9;
+        margin-bottom: 30px;
+        font-style: italic;
+        opacity: 0.9;
+      }
+
+      .section-heading {
+        font-family: 'Cinzel', serif;
+        font-size: 26px;
+        font-weight: 600;
+        color: #0b030b;
+        margin-top: 55px;
+        margin-bottom: 18px;
+        border-bottom: 1px solid rgba(11, 3, 11, 0.2);
+        padding-bottom: 8px;
+        clear: both;
+      }
+
+      .subsection-heading {
+        font-family: 'Cinzel', serif;
+        font-size: 20px;
+        font-weight: 600;
+        color: #0b030b;
+        margin-top: 35px;
+        margin-bottom: 12px;
+        clear: both;
+      }
+
+      .article-body {
+        font-family: 'Palatino Linotype', Palatino, serif;
+        font-size: 16px;
+        color: #0b030b;
+        line-height: 1.9;
+        margin-bottom: 16px;
+        opacity: 0.9;
+      }
+
+      .timeline-item {
+        font-family: 'Palatino Linotype', Palatino, serif;
+        font-size: 16px;
+        color: #0b030b;
+        line-height: 1.9;
+        margin-bottom: 10px;
+        padding-left: 20px;
+        border-left: 2px solid rgba(11, 3, 11, 0.2);
+        opacity: 0.9;
+      }
+
+      .timeline-item strong { font-weight: bold; }
+
+      .article-figure {
+        float: right;
+        margin: 4px 0 22px 28px;
+        width: 220px;
+        border: 1px solid rgba(11, 3, 11, 0.1);
+        box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+        background: #ede2ce;
+      }
+
+      .article-figure.left {
+        float: left;
+        margin: 4px 28px 22px 0;
+      }
+
+      .article-figure a {
+        display: block;
+        cursor: zoom-in;
+      }
+
+      .article-figure img {
+        width: 100%;
+        height: auto;
+        display: block;
+        transition: opacity 0.2s ease;
+      }
+
+      .article-figure a:hover img { opacity: 0.88; }
+
+      .article-figure figcaption {
+        font-family: 'Palatino Linotype', Palatino, serif;
+        font-size: 11px;
+        color: #0b030b;
+        opacity: 0.55;
+        padding: 5px 8px;
+        text-align: center;
+        font-style: italic;
+        line-height: 1.4;
+        border-top: 1px solid rgba(11, 3, 11, 0.07);
+      }
+
+      .clearfix::after { content: ''; display: table; clear: both; }
+
+      /* LIGHTBOX */
+      .lightbox {
+        display: none;
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: rgba(0, 0, 0, 0.88);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+        cursor: zoom-out;
+      }
+
+      .lightbox.active { display: flex; }
+
+      .lightbox img {
+        max-width: 88vw;
+        max-height: 88vh;
+        object-fit: contain;
+        box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
+      }
+
+      .lightbox-close {
+        position: fixed;
+        top: 20px; right: 28px;
+        color: #f0e4d1;
+        font-size: 32px;
+        cursor: pointer;
+        font-family: serif;
+        opacity: 0.8;
+        line-height: 1;
+      }
+
+      .lightbox-close:hover { opacity: 1; }
+
+      .back-to-top {
+        display: block;
+        margin: 60px auto 0 auto;
+        width: fit-content;
+        padding: 12px 30px;
+        font-family: 'Cinzel', serif;
+        font-size: 15px;
+        color: #f0e4d1;
+        background-color: #0b030b;
+        cursor: pointer;
+        letter-spacing: 1px;
+        transition: opacity 0.2s ease;
+        text-decoration: none;
+        clear: both;
+      }
+
+      .back-to-top:hover { opacity: 0.75; }
+    </style>
+  </head>
+  <body>
+
+    <div class="lightbox" id="lightbox">
+      <span class="lightbox-close" id="lightboxClose">x</span>
+      <img id="lightboxImg" src="" alt="">
+    </div>
+
+    <nav class="navbar">
+      <a href="sorry.html">
+        <img src="socialmedia.png" alt="Social Media" class="social-icons">
+      </a>
+      <div class="contact-info">
+        <h3>Contact us at:</h3>
+        <p>+40 712 345 678</p>
+        <p>thepantheonreport@yahoo.co.uk</p>
+      </div>
+      <a href="index.html">
+        <img src="logo-pantheon.png" alt="The Pantheon Report" class="logo">
+      </a>
+    </nav>
+
+    <div class="category-bar">
+      <div class="cat-item"><a href="sorry.html">Contemporan News</a></div>
+<div class="cat-item"><a href="sorry.html">Roman History and Culture</a></div>
+<div class="cat-item"><a href="historical-reports.html">Historical Reports and Articles</a></div>
+<div class="cat-item"><a href="sorry.html">About Us</a></div>
+    </div>
+
+    <div class="sidebar-tab" id="sidebarTab">›</div>
+
+    <div class="sidebar" id="sidebar">
+      <div class="toc">
+        <p class="toc-title">Contents</p>
+        <a href="#section1" class="toc-main">1. The Fall of Rome</a>
+        <a href="#section1-1" class="toc-sub">1.1 Diocletian's Rule</a>
+        <a href="#section1-2" class="toc-sub">1.2 Migrations and the Border Crisis</a>
+        <a href="#section1-3" class="toc-sub">1.3 The System Breaks</a>
+        <a href="#section1-4" class="toc-sub">1.4 100 Years of Decline</a>
+        <a href="#section2" class="toc-main">2. The Fall of Empires</a>
+        <a href="#section2-1" class="toc-sub">2.1 The Certainty of Permanence</a>
+        <a href="#section2-2" class="toc-sub">2.2 Imperial Decline</a>
+        <a href="#section2-3" class="toc-sub">2.3 Polycentric Fracture</a>
+        <a href="#section3" class="toc-main">3. The Modern West</a>
+        <a href="#section3-1" class="toc-sub">3.1 United Kingdom</a>
+        <a href="#section3-2" class="toc-sub">3.2 United States</a>
+        <a href="#section4" class="toc-main">4. Conclusion</a>
+      </div>
+    </div>
+
+    <div class="main-content">
+      <div class="article">
+
+        <div class="author-info">
+          <p class="written-by">Written by Michael Dyonses</p>
+          <p class="date">23rd of June, 2026</p>
+          <p class="time">7:21PM</p>
+        </div>
+
+        <p class="view-other">View other on <a href="historical-reports.html">Historical Reports and Articles</a></p>
+
+        <div class="article-content clearfix">
+
+          <div class="author-float">
+            <div class="author-box">
+              <img src="wojak-author.png" alt="Author">
+            </div>
+            <p class="author-name">Michael Dyonses</p>
+          </div>
+
+          <h1 class="article-title">The illusion of certainty: How can the Geopolitics around Rome's Fall in 476 AD connect to today's falling giants</h1>
+
+          <p class="article-intro">Today's article was published by Michael Dyonses, one of the most well-known historians in the U.K. as he has a doctorate in Roman History and teached in many universities. In today's article he talks about the Fall of the Roman Empire in 476 AD and how their process is a mirror to the problems of today's declining powers. His article has been criticized and appreciated widely since it has been published. Here is his text on the past and current geopolitics of these falling giants and how deep their connection may really be.</p>
+
+          <h2 class="section-heading" id="section1">1. The Fall of the Roman Empire</h2>
+
+          <h3 class="subsection-heading" id="section1-1">1.1 Diocletian's Rule</h3>
+
+          <figure class="article-figure">
+            <a href="#" class="lightbox-trigger" data-src="https://commons.wikimedia.org/wiki/Special:FilePath/Theodosius_I%27s_empire.png">
+              <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Theodosius_I%27s_empire.png" alt="Roman Empire East-West split 395 AD" onerror="this.parentElement.parentElement.style.display='none'">
+            </a>
+            <figcaption>Division of the Roman Empire, 395 AD.</figcaption>
+          </figure>
+
+          <p class="article-body">Rome did not fall. That phrase can be one of the most misleading pieces of historical writing. What actually did happen for the Romans to finally fall was a long process of framework failure across about two centuries ever since the early 300s, during which most people did not believe that their great and prosperous empire could ever fall. But they will be shook, as their expensive to keep borders, growing military of outsiders, and Diocletian's split, will most certainly show the cracks of the Roman system, as well as the wealthy senatorial class.</p>
+          <p class="article-body">By 285 AD their borders stretched from northern Britain to Mesopotamia, a very expensive one to keep. Between 235 and 284 AD there were about over twenty men claiming the imperial title, and most of them died in a series of violent events and assassinations. Diocletian came to power in 284 AD and his reform, introducing a Tetrarchy, divided the country between four rulers. It was a functioning response, but it also acknowledged that the unified empire was no longer really governable as a single unit.</p>
+          <p class="article-body">The split into East and West created a very uneven balance. The East kept Alexandria, Antioch, the trade routes to the outside world like to Persia or India, and dense populations contributing a lot to the economy due to taxes. The West got the worst deal ever: long borders along the Rhine and the Danube, a military enormous relative to the economy supporting it, fewer important cities, and weaker tax money. These made it quite impossible to fully resolve the falling West and its borders, as what followed is truly a testament to how the Roman invincibility did fade, and not without cause.</p>
+
+          <h3 class="subsection-heading" id="section1-2">1.2 Disastrous Migrations and the Border Crisis in the West</h3>
+
+          <figure class="article-figure left">
+            <a href="#" class="lightbox-trigger" data-src="https://commons.wikimedia.org/wiki/Special:FilePath/Invasions_of_the_Roman_Empire_1.png">
+              <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Invasions_of_the_Roman_Empire_1.png" alt="Map of barbarian invasions of the Roman Empire" onerror="this.parentElement.parentElement.style.display='none'">
+            </a>
+            <figcaption>Barbarian invasions of the Roman Empire, 2nd to 6th centuries.</figcaption>
+          </figure>
+
+          <p class="article-body">The Huns arrived in the Pontic steppe in early 370 AD and their movements determined a domino effect across the whole European continent, pushing many peoples west into Roman territory. The Visigoths for example, pushed from their former lands, sent a delegation to Emperor Valens in 376 AD requesting permission to cross the Danube and settle inside the Roman lands. Valens agreed. Sure, maybe this was not a bad thing, but the execution was truly horrendous.</p>
+          <p class="article-body">Roman officials managing the new populations were very corrupt. Weapons were confiscated and sold. Food was demanded in exchange for spoiled provisions. The people who came looking for safety were exploited by the officials supposed to properly integrate them into society. They revolted, as it is human to do so. The revolt spread faster than anyone anticipated, and a managed migration became a military crisis in the space of two years.</p>
+
+          <h3 class="subsection-heading" id="section1-3">1.3 How did the "immortal" Roman System Break</h3>
+
+          <figure class="article-figure">
+            <a href="#" class="lightbox-trigger" data-src="https://commons.wikimedia.org/wiki/Special:FilePath/Fineness_of_early_Roman_Imperial_silver_coins.png">
+              <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Fineness_of_early_Roman_Imperial_silver_coins.png" alt="Chart showing decline in silver content of Roman coins" onerror="this.parentElement.parentElement.style.display='none'">
+            </a>
+            <figcaption>Silver content of Roman coins over time.</figcaption>
+          </figure>
+
+          <p class="article-body">The senatorial class owned vast agricultural estates across the territories of Italy, North Africa, Spain, and Gaul, and had the political connections to resist taxation. The burden fell on smaller landowners and traders with far less of a capacity in both politics and class to absorb it. The treasury ran habitually short. Successive emperors reduced the silver content of Roman coins, triggering serious inflation and eroding confidence in the currency. Real wages for ordinary people collapsed.</p>
+          <p class="article-body">With no real revenue to pay soldiers, the state outsourced its military to foederati, those were outsider Germanic tribal groups loyal actually to their own commanders and not to Rome. When the moment came, the army defending the Western Empire had no particular reason to defend it, as their loyalties were to their actual true home.</p>
+
+          <h3 class="subsection-heading" id="section1-4">1.4 A Deconstruction lasting 100 Years</h3>
+
+          <figure class="article-figure" style="width:160px;">
+            <a href="#" class="lightbox-trigger" data-src="https://commons.wikimedia.org/wiki/Special:FilePath/Sack_of_Rome_by_the_Visigoths_on_24_August_410_by_JN_Sylvestre_1890.jpg">
+              <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Sack_of_Rome_by_the_Visigoths_on_24_August_410_by_JN_Sylvestre_1890.jpg" alt="The Sack of Rome 410 AD painting by JN Sylvestre 1890" onerror="this.parentElement.parentElement.style.display='none'">
+            </a>
+            <figcaption>Sack of Rome, 410 AD. J-N Sylvestre, 1890.</figcaption>
+          </figure>
+
+          <p class="article-body">The Western Empire did not collapse in one moment. It deteriorated across a century through a sequence of military defeats, failing reforms, and border crises. Here is a simple chronology of what happened in the span of a century with the Western Roman Empire, until their actual fall.</p>
+          <p class="timeline-item"><strong>376 AD:</strong> Massive Gothic crossings overwhelmed the local Roman infrastructure.</p>
+          <p class="timeline-item"><strong>378 AD:</strong> The Battle of Adrianople, one of the most disastrous defeats in Roman history, with Emperor Valens getting killed by the Goths. Even with 10,000 more troops than the 20,000 Gothic rebels, they still ended up getting totally crushed.</p>
+          <p class="timeline-item"><strong>410 AD:</strong> Alaric the king of the Visigoths sacks Rome. The city stood in Roman hands for over 800 years, this is the first time they lost it to an external force. It was a shock to the population at that time, they believed that Rome was impenetrable.</p>
+          <p class="timeline-item"><strong>455 AD:</strong> The Vandals led by King Gaiseric sack Rome a second time following the murder of Emperor Valentinian III and Petronius Maximus seizing the throne. Maximus broke a treaty by marrying Valentian's widow and forcing her daughter Eudocia to marry his own son, since she was promised and betrothed to Gaiseric's son. This prompted the invasion, and this certain event led to the origin of the word "vandalism".</p>
+          <p class="timeline-item"><strong>476 AD:</strong> Odoacer, the Germanic military leader, deposes the last Western emperor, Romulus Augustulus, and sends the imperial regalia to Constantinople, proclaiming himself as King of Italy. He did not execute Romulus Augustulus, but instead exiled him, while he established the first "barbaric" kingdom of Italy.</p>
+
+          <h2 class="section-heading" id="section2">2. The Recurring Constant: The Fall of Empires</h2>
+
+          <h3 class="subsection-heading" id="section2-1">2.1 The Certainty of Permanence</h3>
+          <p class="article-body">Every major power at its peak tends to believe it will last forever. Rome did survive many civil wars, even plagues and military annihilation before its actual fall. The ruling class thought that the system was fundamentally impossible to break, themselves creating the myth of Roma Aeterna which translates to Eternal Rome, while the state propaganda surely did work through many works of poetry and political moves. The problem is that being great before is a poor predictor of future survival once the conditions change. The belief in permanence persisted long after the conditions to make the total fracture of the Western Roman Empire possible even appeared.</p>
+
+          <h3 class="subsection-heading" id="section2-2">2.2 The Schematic of Imperial Decline</h3>
+
+          <figure class="article-figure">
+            <a href="#" class="lightbox-trigger" data-src="https://commons.wikimedia.org/wiki/Special:FilePath/Cole_Thomas_The_Course_of_Empire_Destruction_1836.jpg">
+              <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Cole_Thomas_The_Course_of_Empire_Destruction_1836.jpg" alt="The Course of Empire: Destruction by Thomas Cole 1836" onerror="this.parentElement.parentElement.style.display='none'">
+            </a>
+            <figcaption>Thomas Cole, "Destruction" (1836).</figcaption>
+          </figure>
+
+          <p class="article-body">In his book, the recognised author Joseph Tainter argued that civilisations grow by complexity the more they continue to exist. For example: more bureaucracy, more specialisation, larger militaries. Each addition is important but adds more burden as well. At some point the returns of the system break down and the complexity costs more than it produces. The population disengages, institutions lose legitimacy, wealth concentrates at the top. The middle bears an increasing share of the burden as the wealthy class decides to shelter themselves from the economic turmoil. Whenever a disastrous external factor appears, the system just breaks.</p>
+
+          <h3 class="subsection-heading" id="section2-3">2.3 The Transition to Polycentric Fracture</h3>
+
+          <figure class="article-figure left">
+            <a href="#" class="lightbox-trigger" data-src="https://commons.wikimedia.org/wiki/Special:FilePath/C._476_Europe.jpg">
+              <img src="https://commons.wikimedia.org/wiki/Special:FilePath/C._476_Europe.jpg" alt="Map of Europe in 476 AD after fall of Western Roman Empire" onerror="this.parentElement.parentElement.style.display='none'">
+            </a>
+            <figcaption>Europe in 476 AD, fragmented after Rome's fall.</figcaption>
+          </figure>
+
+          <p class="article-body">When a dominant power weakens, the world does not become more stable. The rules enforced by that power stop being enforced. Regional actors start testing what they can get away with. Smaller conflicts escalate because there is no longer anyone with the interest and capacity to stop them. The Mediterranean after 476 AD was certainly more violent and unstable for most people. The stability Rome provided had a cost that only became visible after its fall.</p>
+
+          <h2 class="section-heading" id="section3">3. The Hegemonies of the current West</h2>
+
+          <h3 class="subsection-heading" id="section3-1">3.1 The United Kingdom</h3>
+
+          <figure class="article-figure">
+            <a href="#" class="lightbox-trigger" data-src="https://commons.wikimedia.org/wiki/Special:FilePath/British_Empire_1921.png">
+              <img src="https://commons.wikimedia.org/wiki/Special:FilePath/British_Empire_1921.png" alt="Map of the British Empire at its peak in 1921" onerror="this.parentElement.parentElement.style.display='none'">
+            </a>
+            <figcaption>The British Empire at its greatest extent, 1921.</figcaption>
+          </figure>
+
+          <p class="article-body">The prime example for a more modern declining power: once Britain controlled roughly a quarter of the earth's land surface and population in 1900. World War Two left it victorious but literally bankrupt, they became dependent on American financial support and incapable of projecting imperial power at the same scale, as the British Raj decided to leave the crown in 1947 in a series of multiple events that led to it. Decolonisation followed not as a choice but as an acknowledgement of limits mostly.</p>
+          <p class="article-body">In today's time, following Keir Starmer's resignation as a P.M. amid historically low approval ratings, Britain is now on its seventh prime minister in ten years. That rate of leadership turnover in a system designed for stability reflects the inheritance of difficult structural problems, a very much similar pattern to Rome's revolving-door emperors of the late imperial period.</p>
+
+          <h3 class="subsection-heading" id="section3-2">3.2 The United States of America and the Challenges of Today</h3>
+
+          <figure class="article-figure left">
+            <a href="#" class="lightbox-trigger" data-src="https://commons.wikimedia.org/wiki/Special:FilePath/Gini_Coefficient_for_USA_1967-2020.svg">
+              <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Gini_Coefficient_for_USA_1967-2020.svg" alt="US Gini coefficient 1967 to 2020" onerror="this.parentElement.parentElement.style.display='none'">
+            </a>
+            <figcaption>US Gini coefficient 1967 to 2020, five decades of rising inequality.</figcaption>
+          </figure>
+
+          <p class="article-body">America's structural problems are harder to see from the inside because the country remains powerful in absolute terms especially outside, with it having the biggest military and presence in many of the NATO countries as a responder force against potential conflicts. But current military strength is not the same as a stable structure with actual equilibrium. Wealth concentration is at its highest since the 1920s, the share of national income going to the top percentile has roughly doubled since 1980, real wages for the bottom half have barely moved in forty years. The wealthy class grows forever while the middle and the bottom are just left to rot.</p>
+          <p class="article-body">The countries watching this giant fall, following historic lows of approval rates of current leadership and a split political system between two forces, can afford to just sit and stay patient while the U.S. falls to its own problems. It is imperative that they take monumental actions towards correcting the failures of today, however that is mostly far-fetched as the administration is perhaps more occupied with posting AI content and edits on social media than enforcing real policy for people's lives and to further improve education.</p>
+
+          <h2 class="section-heading" id="section4">4. The Comparison and Final Conclusion</h2>
+
+          <figure class="article-figure">
+            <a href="#" class="lightbox-trigger" data-src="https://commons.wikimedia.org/wiki/Special:FilePath/Cole_Thomas_The_Course_of_Empire_Desolation_1836.jpg">
+              <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Cole_Thomas_The_Course_of_Empire_Desolation_1836.jpg" alt="The Course of Empire: Desolation by Thomas Cole 1836" onerror="this.parentElement.parentElement.style.display='none'">
+            </a>
+            <figcaption>Thomas Cole, "Desolation" (1836).</figcaption>
+          </figure>
+
+          <p class="article-body">The comparison between Rome and the modern West should not be overstated. Sure maybe the contexts are different, the period is different, but most people decide to not acknowledge the fact that it is impossible for a hegemony to continue, especially if they run on a highly corrupt system, where in reality, money buys states, votes, and even people. Maybe it is all about money in the end for some people. But nevertheless, it is just a speculation, and hopefully for the sake of stability, the current crises can be ended through honest work by the powers of this world.</p>
+          <p class="article-body">What is important is that the underlying conditions recur. Inequality that erodes institutional legitimacy. Military commitments that outrun national resources. Political leadership focused on crisis management rather than structural repair. A governing class that believes in its own permanence past the point where that belief is justified. These patterns appeared initially in Rome, and continued through a series of Empires from the Byzantines which eventually did fall to the Ottoman forces, marking the end of the Eastern Roman Empire, and to the colonial powers such as France and the U.K. who have yet to find political stability in today's time, as well as the U.S. lately, with many crises started, and so many left to manage, while the foundation itself breaks down in time.</p>
+          <p class="article-body">The Western Roman Empire's collapse could have been averted perhaps. Better decisions at key events could have produced different outcomes. The same remains true today, the trajectory of a nation is not a concluded destiny, but trajectories matter, and the ones currently visible in the major Western powers do not point in comfortable directions. Whether that changes depends on decisions being made now. History does not make those decisions. People do.</p>
+
+          <a href="#" class="back-to-top">Back to Top</a>
+
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const sidebar = document.getElementById('sidebar');
+      const tab = document.getElementById('sidebarTab');
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightboxImg');
+      const lightboxClose = document.getElementById('lightboxClose');
+
+      function updateSidebarTop() {
+        const scrollY = window.scrollY;
+        const navbarHeight = 230;
+        const catBarHeight = 50;
+        if (scrollY >= navbarHeight) {
+          sidebar.style.top = catBarHeight + 'px';
+          sidebar.style.height = 'calc(100vh - ' + catBarHeight + 'px)';
+        } else {
+          const topVal = navbarHeight + catBarHeight - scrollY;
+          sidebar.style.top = topVal + 'px';
+          sidebar.style.height = 'calc(100vh - ' + topVal + 'px)';
+        }
+      }
+
+      window.addEventListener('scroll', updateSidebarTop);
+      updateSidebarTop();
+
+      function openSidebar() {
+        sidebar.classList.add('open');
+        tab.classList.add('open');
+        tab.textContent = '‹';
+      }
+
+      function closeSidebar() {
+        sidebar.classList.remove('open');
+        tab.classList.remove('open');
+        tab.textContent = '›';
+      }
+
+      tab.addEventListener('click', () => {
+        sidebar.classList.contains('open') ? closeSidebar() : openSidebar();
+      });
+
+      document.addEventListener('mousemove', (e) => {
+        if (e.clientX < 15) openSidebar();
+        if (sidebar.classList.contains('open') && e.clientX > 280) closeSidebar();
+      });
+
+      document.querySelectorAll('.lightbox-trigger').forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          lightboxImg.src = link.dataset.src;
+          lightbox.classList.add('active');
+        });
+      });
+
+      lightbox.addEventListener('click', () => {
+        lightbox.classList.remove('active');
+        lightboxImg.src = '';
+      });
+
+      lightboxClose.addEventListener('click', () => {
+        lightbox.classList.remove('active');
+        lightboxImg.src = '';
+      });
+    </script>
+
+  </body>
+</html>

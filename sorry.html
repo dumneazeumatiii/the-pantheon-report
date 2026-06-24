@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>The Pantheon Report</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+      *, *::before, *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html, body {
+        width: 100%;
+        height: 100%;
+        background-color: #f0e4d1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .message {
+        font-family: 'Cinzel', serif;
+        font-size: 48px;
+        color: #0b030b;
+        text-align: center;
+        margin-bottom: 30px;
+        line-height: 1.8;
+        text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.25);
+      }
+
+      .logo {
+        height: 400px;
+        width: auto;
+        cursor: pointer;
+        filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.4));
+        transition: filter 0.2s ease;
+      }
+
+      .logo:hover {
+        filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.55));
+      }
+    </style>
+  </head>
+  <body>
+
+    <p class="message">Sorry, this site has not yet been set up.<br>Go back to the front page.</p>
+
+    <a href="index.html">
+      <img src="logo-pantheon.png" alt="The Pantheon Report" class="logo">
+    </a>
+
+  </body>
+</html>
